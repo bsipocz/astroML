@@ -25,7 +25,7 @@ matrix:
     fast_finish: true
 
     include:
-        - env: NUMPY_VERSION=1.16 SCRIPT_CMD='pytest astroML --remote-data'
+        - env: SCRIPT_CMD='pytest astroML --remote-data'
 
         - env: NUMPY_VERSION=1.15
 
@@ -37,6 +37,8 @@ matrix:
 
         - env: PYTHON_VERSION=3.6 SCRIPT_CMD='make -C doc html' PIP_DEPENDENCIES='sphinx'
 
+        - env: FIGURE_TESTING=True SCRIPT_CMD=''
+
 install:
     - git clone git://github.com/astropy/ci-helpers.git
     - source ci-helpers/travis/setup_conda.sh
@@ -44,3 +46,12 @@ install:
 
 script:
     - $SCRIPT_CMD
+    - if [[ $FIGURE_TESTING ]]; then
+        git clone git://github.com/astroML/astroML_figures.git;
+        pip install nose;
+        cd astroML_figures;
+        for i in 1 2 3 4 5 6 7 8 9 10; do
+            FIGURES_TO_TEST=book_figures/chapter${i}/fig* nosetests astroML_fig_tests&
+        done;
+        while [[ $(jobs|wc -l) -gt 0 ]]; do sleep 1 ;done
+      fi
