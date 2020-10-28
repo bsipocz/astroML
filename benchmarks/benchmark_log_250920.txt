@@ -1,0 +1,104 @@
+In [3]: for N, comp, m_iter in itertools.product([1000,2000,5000], [5,10,15,20], [250,500,1000]):  
+   ...:         print(N, comp, m_iter)   
+   ...:         %time XDGMM_benchmark.compute_XD_results(N, comp, m_iter, True) 
+   ...:                                                                                                                                       
+1000 5 250
+/usr/local/lib/python3.7/site-packages/sklearn/mixture/_base.py:269: ConvergenceWarning: Initialization 1 did not converge. Try different init parameters, or increase max_iter, tol or check for degenerate data.
+  % (init + 1), ConvergenceWarning)
+CPU times: user 1min 27s, sys: 1.58 s, total: 1min 28s
+Wall time: 1min 28s
+1000 5 500
+/usr/local/lib/python3.7/site-packages/sklearn/mixture/_base.py:269: ConvergenceWarning: Initialization 1 did not converge. Try different init parameters, or increase max_iter, tol or check for degenerate data.
+  % (init + 1), ConvergenceWarning)
+CPU times: user 2min 46s, sys: 2.01 s, total: 2min 48s
+Wall time: 2min 49s
+1000 5 1000
+/usr/local/lib/python3.7/site-packages/sklearn/mixture/_base.py:269: ConvergenceWarning: Initialization 1 did not converge. Try different init parameters, or increase max_iter, tol or check for degenerate data.
+  % (init + 1), ConvergenceWarning)
+CPU times: user 5min 19s, sys: 3.48 s, total: 5min 23s
+Wall time: 5min 25s
+1000 10 250
+CPU times: user 4min 14s, sys: 30.2 s, total: 4min 44s
+Wall time: 2min 43s
+1000 10 500
+CPU times: user 8min 39s, sys: 1min 2s, total: 9min 42s
+Wall time: 5min 46s
+1000 10 1000
+CPU times: user 17min 8s, sys: 2min 3s, total: 19min 11s
+Wall time: 11min 16s
+1000 15 250
+CPU times: user 5min 47s, sys: 33.7 s, total: 6min 20s
+Wall time: 4min 24s
+1000 15 500
+CPU times: user 11min 26s, sys: 1min 5s, total: 12min 31s
+Wall time: 8min 36s
+1000 15 1000
+CPU times: user 23min 8s, sys: 2min 13s, total: 25min 22s
+Wall time: 17min 39s
+1000 20 250
+CPU times: user 6min 35s, sys: 29.2 s, total: 7min 5s
+Wall time: 5min 3s
+1000 20 500
+CPU times: user 13min 47s, sys: 1min 4s, total: 14min 51s
+Wall time: 10min 54s
+1000 20 1000
+CPU times: user 27min 36s, sys: 2min 6s, total: 29min 43s
+Wall time: 22min 4s
+2000 5 250
+CPU times: user 4min 5s, sys: 23.1 s, total: 4min 28s
+Wall time: 2min 20s
+2000 5 500
+CPU times: user 8min 22s, sys: 1min, total: 9min 23s
+Wall time: 5min 27s
+2000 5 1000
+CPU times: user 17min 10s, sys: 2min 16s, total: 19min 27s
+Wall time: 11min 52s
+2000 10 250
+CPU times: user 6min 57s, sys: 34.6 s, total: 7min 32s
+Wall time: 5min 35s
+2000 10 500
+CPU times: user 14min 7s, sys: 1min 8s, total: 15min 16s
+Wall time: 11min 26s
+2000 10 1000
+CPU times: user 27min 51s, sys: 2min 14s, total: 30min 5s
+Wall time: 22min 18s
+2000 15 250
+CPU times: user 10min 26s, sys: 39 s, total: 11min 5s
+Wall time: 9min 14s
+2000 15 500
+CPU times: user 22min 11s, sys: 1min 16s, total: 23min 28s
+Wall time: 19min 44s
+2000 15 1000
+CPU times: user 37min 31s, sys: 2min 4s, total: 39min 35s
+Wall time: 31min 35s
+2000 20 250
+CPU times: user 11min 9s, sys: 27.3 s, total: 11min 36s
+Wall time: 9min 31s
+2000 20 500
+CPU times: user 22min 21s, sys: 55 s, total: 23min 16s
+Wall time: 19min 9s
+2000 20 1000
+CPU times: user 47min 56s, sys: 2min 3s, total: 49min 59s
+Wall time: 41min 53s
+5000 5 250
+CPU times: user 8min 11s, sys: 28.7 s, total: 8min 40s
+Wall time: 6min 35s
+5000 5 500
+CPU times: user 16min 14s, sys: 56.8 s, total: 17min 11s
+Wall time: 13min 6s
+5000 5 1000
+CPU times: user 32min 39s, sys: 1min 55s, total: 34min 34s
+Wall time: 26min 25s
+5000 10 250
+CPU times: user 14min, sys: 30.6 s, total: 14min 30s
+Wall time: 12min 25s
+5000 10 500
+CPU times: user 27min 23s, sys: 57.7 s, total: 28min 21s
+Wall time: 24min 11s
+5000 10 1000
+CPU times: user 1h 36s, sys: 2min 33s, total: 1h 3min 10s
+Wall time: 55min 33s
+5000 15 250
+CPU times: user 22min 21s, sys: 46.5 s, total: 23min 8s
+Wall time: 21min 16s
+5000 15 500

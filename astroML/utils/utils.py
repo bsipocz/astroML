@@ -4,6 +4,8 @@ from sklearn.utils import check_random_state as sk_check_random_state
 from astroML.utils.decorators import deprecated
 from astroML.utils.exceptions import AstroMLDeprecationWarning
 
+import dask.array as da
+
 try:  # SciPy >= 0.19
     from scipy.special import logsumexp as scipy_logsumexp
 except ImportError:
@@ -56,9 +58,9 @@ def log_multivariate_gaussian(x, mu, V, Vinv=None, method=1):
     >>> log_multivariate_gaussian(x, mu, V)
     -3.3871832107434003
     """
-    x = np.asarray(x, dtype=float)
-    mu = np.asarray(mu, dtype=float)
-    V = np.asarray(V, dtype=float)
+    x = da.asarray(x)#, dtype=float)
+    mu = da.asarray(mu)#, dtype=float)
+    V = da.asarray(V)#, dtype=float)
 
     ndim = x.shape[-1]
     x_mu = x - mu
@@ -74,14 +76,14 @@ def log_multivariate_gaussian(x, mu, V, Vinv=None, method=1):
         method = 1
 
     if method == 0:
-        Vchol = np.array([linalg.cholesky(V[i], lower=True)
+        Vchol = da.array([linalg.cholesky(V[i], lower=True)
                           for i in range(V.shape[0])])
 
         # we may be more efficient by using scipy.linalg.solve_triangular
         # with each cholesky decomposition
-        VcholI = np.array([linalg.inv(Vchol[i])
+        VcholI = da.array([da.linalg.inv(Vchol[i])
                           for i in range(V.shape[0])])
-        logdet = np.array([2 * np.sum(np.log(np.diagonal(Vchol[i])))
+        logdet = da.array([2 * np.sum(np.log(np.diagonal(Vchol[i])))
                            for i in range(V.shape[0])])
 
         VcholI = VcholI.reshape(Vshape)
@@ -93,12 +95,12 @@ def log_multivariate_gaussian(x, mu, V, Vinv=None, method=1):
 
     elif method == 1:
         if Vinv is None:
-            Vinv = np.array([linalg.inv(V[i])
+            Vinv = da.array([da.linalg.inv(V[i])
                              for i in range(V.shape[0])]).reshape(Vshape)
         else:
             assert Vinv.shape == Vshape
 
-        logdet = np.log(np.array([linalg.det(V[i])
+        logdet = np.log(da.array([np.linalg.det(V[i])
                                   for i in range(V.shape[0])]))
         logdet = logdet.reshape(Vshape[:-2])
 

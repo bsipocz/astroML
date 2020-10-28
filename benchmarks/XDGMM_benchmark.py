@@ -1,7 +1,10 @@
 # Based on figure 6.11, extreme Deconvolution example
 
 import os
+from memory_profiler import profile
 
+
+@profile
 def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=False):
 
     if not threading:
@@ -46,4 +49,5 @@ def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=F
     sample = clf.sample(n_points)
 
 
-
+if __name__ == '__main__':
+    compute_XD_results()

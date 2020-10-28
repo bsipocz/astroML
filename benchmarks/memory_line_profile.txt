@@ -1,0 +1,47 @@
+Filename: XDGMM_benchmark.py
+
+Line #    Mem usage    Increment   Line Contents
+================================================
+     7     37.8 MiB     37.8 MiB   @profile
+     8                             def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=False):
+     9                             
+    10     37.9 MiB      0.0 MiB       if not threading:
+    11     37.9 MiB      0.0 MiB           os.environ['OMP_NUM_THREADS'] = '1'
+    12     37.9 MiB      0.0 MiB           os.environ['OPENBLAS_NUM_THREADS'] = '1'
+    13     37.9 MiB      0.0 MiB           os.environ['MKL_NUM_THREADS'] = '1'
+    14                             
+    15                                 # moving imports here, so threading can be adjusted from the function
+    16     46.9 MiB      9.0 MiB       import numpy as np
+    17    107.1 MiB     60.2 MiB       from astroML.density_estimation import XDGMM
+    18                             
+    19                                 # ------------------------------------------------------------
+    20                                 # Sample the dataset
+    21    107.1 MiB      0.0 MiB       np.random.seed(0)
+    22                             
+    23                                 # generate the true data
+    24    107.1 MiB      0.0 MiB       x_true = (1.4 + 2 * np.random.random(n_points)) ** 2
+    25    107.1 MiB      0.0 MiB       y_true = 0.1 * x_true ** 2
+    26                             
+    27                                 # add scatter to "true" distribution
+    28    107.1 MiB      0.0 MiB       dx = 0.1 + 4. / x_true ** 2
+    29    107.1 MiB      0.0 MiB       dy = 0.1 + 10. / x_true ** 2
+    30                             
+    31    107.2 MiB      0.1 MiB       x_true += np.random.normal(0, dx, n_points)
+    32    107.2 MiB      0.0 MiB       y_true += np.random.normal(0, dy, n_points)
+    33                             
+    34                                 # add noise to get the "observed" distribution
+    35    107.2 MiB      0.0 MiB       dx = 0.2 + 0.5 * np.random.random(n_points)
+    36    107.2 MiB      0.0 MiB       dy = 0.2 + 0.5 * np.random.random(n_points)
+    37                             
+    38    107.3 MiB      0.0 MiB       x = x_true + np.random.normal(0, dx)
+    39    107.3 MiB      0.0 MiB       y = y_true + np.random.normal(0, dy)
+    40                             
+    41                                 # stack the results for computation
+    42    107.3 MiB      0.0 MiB       X = np.vstack([x, y]).T
+    43    107.4 MiB      0.1 MiB       Xerr = np.zeros(X.shape + X.shape[-1:])
+    44    107.4 MiB      0.0 MiB       diag = np.arange(X.shape[-1])
+    45    107.4 MiB      0.0 MiB       Xerr[:, diag, diag] = np.vstack([dx ** 2, dy ** 2]).T
+    46                             
+    47    107.4 MiB      0.0 MiB       clf = XDGMM(n_components, max_iter=max_iter)
+    48     38.0 MiB      0.0 MiB       clf.fit(X, Xerr)
+    49     40.0 MiB      2.0 MiB       sample = clf.sample(n_points)

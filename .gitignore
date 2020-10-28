@@ -29,3 +29,6 @@ book_figures/*/*.pkl
 
 .coverage
 .pytest_cache
+
+.ipynb_checkpoints/
+*.egg-info/

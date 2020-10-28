@@ -1,16 +1,14 @@
 import numpy as np
 import warnings
+from astroML.linear_model import LinearRegression
 
 try:
     import pymc3 as pm
     import theano.tensor as tt
+    __all__ = ['LinearRegressionwithErrors']
 except ImportError:
+    __all__ = []
     warnings.warn('LinearRegressionwithErrors requires PyMC3 to be installed')
-
-from astroML.linear_model import LinearRegression
-
-
-__all__ = ['LinearRegressionwithErrors']
 
 
 class LinearRegressionwithErrors(LinearRegression):

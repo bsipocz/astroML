@@ -10,6 +10,7 @@ works with R = I.
 from time import time
 
 import numpy as np
+import dask.array as da
 from scipy import linalg
 try:  # SciPy >= 0.19
     from scipy.special import logsumexp as logsumexp
@@ -71,8 +72,8 @@ class XDGMM(BaseEstimator):
         if R is not None:
             raise NotImplementedError("mixing matrix R is not yet implemented")
 
-        X = np.asarray(X)
-        Xerr = np.asarray(Xerr)
+        X = da.asarray(X)
+        Xerr = da.asarray(Xerr)
         n_samples, n_features = X.shape
 
         # assume full covariances of data
@@ -121,8 +122,8 @@ class XDGMM(BaseEstimator):
         p: ndarray
             Probabilities.  shape = (n_samples,)
         """
-        X = np.asarray(X)
-        Xerr = np.asarray(Xerr)
+        X = da.asarray(X)
+        Xerr = da.asarray(Xerr)
         n_samples, n_features = X.shape
 
         # assume full covariances of data
@@ -149,7 +150,7 @@ class XDGMM(BaseEstimator):
         logL : float
             log-likelihood
         """
-        return np.sum(logsumexp(self.logprob_a(X, Xerr), -1))
+        return da.sum(logsumexp(self.logprob_a(X, Xerr), -1))
 
     def _EMstep(self, X, Xerr):
         """
@@ -169,13 +170,13 @@ class XDGMM(BaseEstimator):
         Tshape = T.shape
         T = T.reshape([n_samples * self.n_components,
                        n_features, n_features])
-        Tinv = np.array([linalg.inv(T[i])
+        Tinv = da.array([da.linalg.inv(T[i])
                          for i in range(T.shape[0])]).reshape(Tshape)
         T = T.reshape(Tshape)
 
         #------------------------------------------------------------
         # evaluate each mixture at each point
-        N = np.exp(log_multivariate_gaussian(X, self.mu, T, Vinv=Tinv))
+        N = da.exp(log_multivariate_gaussian(X, self.mu, T, Vinv=Tinv))
 
         #------------------------------------------------------------
         # E-step:
