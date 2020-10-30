@@ -73,10 +73,12 @@ def log_multivariate_gaussian(x, mu, V, Vinv=None, method=1):
 
     if Vinv is not None:
         assert Vinv.shape == Vshape
-        method = 1
+        # Temporarily disabling this optimization, test speed with method=0 only
+        # as np.linalg.det is somehow seems to be problematic with dask arrays
+        # method = 1
 
     if method == 0:
-        Vchol = da.array([linalg.cholesky(V[i], lower=True)
+        Vchol = da.array([da.linalg.cholesky(V[i], lower=True)
                           for i in range(V.shape[0])])
 
         # we may be more efficient by using scipy.linalg.solve_triangular

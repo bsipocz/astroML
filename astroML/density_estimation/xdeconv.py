@@ -133,7 +133,7 @@ class XDGMM(BaseEstimator):
         Xerr = Xerr[:, np.newaxis, :, :]
         T = Xerr + self.V
 
-        return log_multivariate_gaussian(X, self.mu, T) + np.log(self.alpha)
+        return log_multivariate_gaussian(X, self.mu, T, method=0) + np.log(self.alpha)
 
     def logL(self, X, Xerr):
         """Compute the log-likelihood of data given the model
@@ -176,7 +176,7 @@ class XDGMM(BaseEstimator):
 
         #------------------------------------------------------------
         # evaluate each mixture at each point
-        N = da.exp(log_multivariate_gaussian(X, self.mu, T, Vinv=Tinv))
+        N = da.exp(log_multivariate_gaussian(X, self.mu, T, Vinv=Tinv, method=0))
 
         #------------------------------------------------------------
         # E-step:

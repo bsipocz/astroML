@@ -3,7 +3,7 @@
 import os
 
 
-def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=False):
+def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=False, chunks=20):
 
     if not threading:
         os.environ['OMP_NUM_THREADS'] = '1'
@@ -27,15 +27,15 @@ def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=F
     dx = 0.1 + 4. / x_true ** 2
     dy = 0.1 + 10. / x_true ** 2
 
-    x_true += da.random.normal(0, dx, n_points)
-    y_true += da.random.normal(0, dy, n_points)
+    x_true += da.random.normal(0, dx, n_points, chunks=chunks)
+    y_true += da.random.normal(0, dy, n_points, chunks=chunks)
 
     # add noise to get the "observed" distribution
     dx = 0.2 + 0.5 * da.random.random(n_points)
     dy = 0.2 + 0.5 * da.random.random(n_points)
 
-    x = x_true + da.random.normal(0, dx)
-    y = y_true + da.random.normal(0, dy)
+    x = x_true + da.random.normal(0, dx, chunks=chunks)
+    y = y_true + da.random.normal(0, dy, chunks=chunks)
 
     # stack the results for computation
     X = da.vstack([x, y]).T
@@ -50,6 +50,3 @@ def compute_XD_results(n_points=2000, n_components=10, max_iter=500, threading=F
     clf = XDGMM(n_components, max_iter=max_iter)
     clf.fit(X, Xerr)
     sample = clf.sample(n_points)
-
-
-
