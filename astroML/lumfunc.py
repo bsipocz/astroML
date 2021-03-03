@@ -76,7 +76,7 @@ def Cminus(x, y, xmax, ymax):
         if objects:
             Ny[j] = objects
         else:
-            Ny[j] = np.inf
+            Ny[j] = 0.5
 
     Ny[0] = np.inf
     cuml_y = np.cumprod(1. + 1. / Ny)
@@ -99,7 +99,7 @@ def Cminus(x, y, xmax, ymax):
         if objects:
             Nx[i] = objects
         else:
-            Nx[i] = np.inf
+            Nx[i] = 0.5
 
     Nx[0] = np.inf
     cuml_x = np.cumprod(1. + 1. / Nx)
